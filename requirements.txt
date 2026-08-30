@@ -1,0 +1,3 @@
+# CacheForge — Zero Third-Party Runtime Dependencies
+# This project runs entirely on the Python 3 standard library.
+# No pip packages required.
