@@ -20,7 +20,7 @@ python3 cacheforge.py benchmark --records 10000 --json
 
 ---
 
-## 2. Sample Benchmark Output
+## 2. Benchmark Output Format Example
 
 ```
 CacheForge Benchmark Results
@@ -46,3 +46,6 @@ Final Database Size:       1.45 MB
 * **Random Read Throughput**: In-memory binary key index lookups with lazy TTL verification.
 * **Search Latency**: TF-IDF inverted index term evaluation across multi-word queries.
 * **Recovery Speed**: Cold startup log scan, SHA-256 audit, and secondary index construction time.
+
+*Note: Measured benchmark throughput and latency vary depending on the host hardware, storage device I/O, Python version, and system load.*
+

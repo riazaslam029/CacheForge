@@ -8,17 +8,17 @@ Built for **Zero Dependency Hackathon — Track D: Data & Storage**.
 
 ## ⚡ What is CacheForge?
 
-CacheForge is a production-grade, local embedded data engine implemented **100% using Python's standard library**. It provides the durability, crash recovery, and feature completeness of an enterprise storage engine without requiring any third-party `pip` packages.
+CacheForge is a feature-rich, durability-focused local embedded storage engine implemented **100% using Python's standard library**. It provides crash recovery, WAL journaling, index querying, full-text search, TTL expiration, and data integrity verification without requiring any third-party `pip` packages.
 
 ### Why Zero Dependencies Matter
-Modern software stacks often pull in hundreds of external dependencies for basic tasks like binary packing (`msgpack`), file locking (`filelock`), CLI interfaces (`click`/`rich`), or cryptographic hashes (`cryptography`). CacheForge demonstrates that by using operating system primitives and Python standard library modules (`struct`, `fcntl`, `hashlib`, `argparse`, `os.fsync`), you can build a resilient, high-performance embedded storage engine with zero external supply chain risk.
+Modern software stacks often pull in hundreds of external dependencies for basic tasks like binary packing (`msgpack`), file locking (`filelock`), CLI interfaces (`click`/`rich`), or cryptographic hashes (`cryptography`). CacheForge demonstrates that by using operating system primitives and Python standard library modules (`struct`, `fcntl`, `hashlib`, `argparse`, `os.fsync`), you can build a resilient, embedded storage engine with zero external supply chain risk.
 
 ---
 
 ## 🌟 Key Features
 
-* **Persistent Key-Value Store**: Fast binary append-only data storage model with deterministic serialization.
-* **Write-Ahead Logging (WAL)**: Atomic transactions with `os.fsync()` durability guarantees.
+* **Persistent Key-Value Store**: Binary append-only data storage model with deterministic serialization.
+* **Write-Ahead Logging (WAL)**: fsync-backed durable writes with transaction framing and crash recovery.
 * **Automated Crash Recovery**: Recovers committed state, rolls back incomplete writes, and truncates corrupt log tails upon startup (`cacheforge recover`).
 * **SHA-256 Data Integrity**: Cryptographic per-record checksum verification detecting bit rot and corrupt headers (`cacheforge verify`).
 * **Secondary Field Indexing**: Fast query lookups on structured metadata fields (`cacheforge query --field role=student`).
@@ -67,7 +67,7 @@ Modern software stacks often pull in hundreds of external dependencies for basic
 Clone the repository. No installation or `pip install` required!
 
 ```bash
-git clone https://github.com/veyqora-labs/CacheForge.git
+git clone https://github.com/riazaslam029/CacheForge.git
 cd CacheForge
 ```
 
@@ -101,19 +101,13 @@ python3 cacheforge.py stats mydb.cforge --json
 
 ## 📊 Benchmarks
 
-Run the built-in reproducible benchmark suite:
+Run the reproducible benchmark suite locally with:
 
 ```bash
 python3 cacheforge.py benchmark --records 10000
 ```
 
-### Measured Performance Sample
-* **Sequential Writes**: ~35,000 ops/sec
-* **Random Reads**: ~90,000 ops/sec
-* **Deletes Throughput**: ~45,000 ops/sec
-* **Search Latency (p50)**: ~1.8 ms
-* **Search Latency (p95)**: ~4.1 ms
-* **Database Crash Recovery**: ~12 ms
+Performance metrics depend on hardware, Python runtime version, storage device I/O capabilities, database size, and workload.
 
 ---
 
@@ -141,7 +135,7 @@ python3 tools/check_dependencies.py
 
 ---
 
-## 📽️ 3-Minute Judge Demo
+## 📽️ Judge Demo
 
 Execute the automated end-to-end judge demonstration:
 
@@ -163,7 +157,7 @@ Execute the automated end-to-end judge demonstration:
 | Full-Text Search | `re` + `math` (TF-IDF) | `elasticsearch` / `whoosh` |
 | Property Testing | `random` (fixed seeds) | `hypothesis` |
 
-*(See [STDLIB.md](file:///home/riaz/Antigravity%20Work/STDLIB.md) for full audit breakdown).*
+*(See [STDLIB.md](STDLIB.md) for full audit breakdown).*
 
 ---
 
@@ -172,3 +166,4 @@ Execute the automated end-to-end judge demonstration:
 1. **Single-Node Architecture**: Designed for local embedded application storage; not a distributed consensus cluster.
 2. **Platform Locking**: Process locking relies on POSIX `fcntl.flock` (with lockfile fallback for Windows).
 3. **In-Memory Key Index**: Primary key lookup index is stored in RAM and rebuilt on startup for maximum speed.
+
